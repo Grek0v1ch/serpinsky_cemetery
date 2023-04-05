@@ -1,0 +1,16 @@
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/CMakeFiles/serpinsky_cemetry.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glfw/CMakeFiles/edit_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glfw/CMakeFiles/rebuild_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glfw/src/CMakeFiles/glfw.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glfw/src/CMakeFiles/update_mappings.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glfw/src/CMakeFiles/edit_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glfw/src/CMakeFiles/rebuild_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glad/CMakeFiles/glad.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glad/CMakeFiles/edit_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glad/CMakeFiles/rebuild_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glm/CMakeFiles/edit_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glm/CMakeFiles/rebuild_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glm/glm/CMakeFiles/edit_cache.dir
+/Users/ivanvoronov/Documents/Учеба/Programming_4th_semester/serpinsky_cemetery/cmake-build-debug/external/glm/glm/CMakeFiles/rebuild_cache.dir
