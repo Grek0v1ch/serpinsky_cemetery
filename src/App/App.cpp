@@ -4,7 +4,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../Math/TSquareFractal.h"
+#include "../Math/SerpinskyCemetery.h"
 #include "../ResourceManager/ResourceManager.h"
 #include "../Renderer/ShaderProgram.h"
 #include "../../external/stb_image_write.h"
@@ -21,7 +21,7 @@ App::~App() {
     glfwTerminate();
 }
 
-void App::setFractal(const std::shared_ptr<Math::TSquareFractal>& fractal) noexcept {
+void App::setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept {
     _fractal = fractal;
 }
 
@@ -72,7 +72,7 @@ void App::init(const char* path) {
                                             0.0f, static_cast<float>(HEIGHT),
                                             -100.0f, 100.0f);
     glm::mat4 modelMatrix(1.0f);
-    modelMatrix = glm::translate(modelMatrix, glm::vec3(400.0f, 400.0f, 0.0f));
+    // modelMatrix = glm::translate(modelMatrix, glm::vec3(100.0f, 0.0f, 0.0f));
     ResourceManager& resourceManager = ResourceManager::instance();
     resourceManager.setExecutablePath(path);
     auto shader_program = resourceManager.loadShaderProgram("DefaultShader",

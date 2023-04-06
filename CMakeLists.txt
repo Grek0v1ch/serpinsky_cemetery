@@ -7,10 +7,8 @@ add_executable(serpinsky_cemetry
         src/Renderer/ShaderProgram.h
         src/Exception/Exception.cpp
         src/Exception/Exception.h
-        src/Math/Square.cpp
-        src/Math/Square.h
-        src/Math/TSquareFractal.cpp
-        src/Math/TSquareFractal.h
+        src/Math/SerpinskyCemetery.cpp
+        src/Math/SerpinskyCemetery.h
         src/ResourceManager/ResourceManager.cpp
         src/ResourceManager/ResourceManager.h
         src/App/App.cpp

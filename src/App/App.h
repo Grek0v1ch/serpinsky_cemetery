@@ -6,11 +6,13 @@
 #include <GLFW/glfw3.h>
 
 namespace Math {
-    class TSquareFractal;
+    class SerpinskyCemetery;
 }
 
 class App {
 public:
+    GLFWwindow* _window;
+
     App(const App&) = delete;
     App& operator=(const App&) = delete;
     App(App&&) = delete;
@@ -19,7 +21,7 @@ public:
     App(int width, int height, const char* path);
     ~App();
 
-    void setFractal(const std::shared_ptr<Math::TSquareFractal>& fractal) noexcept;
+    void setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept;
 
     void start() noexcept;
     void saveImage(const std::string& filePath) const noexcept;
@@ -28,6 +30,5 @@ private:
 
     const int WIDTH;
     const int HEIGHT;
-    GLFWwindow* _window;
-    std::shared_ptr<Math::TSquareFractal> _fractal;
+    std::shared_ptr<Math::SerpinskyCemetery> _fractal;
 };
