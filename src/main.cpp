@@ -10,32 +10,9 @@
 
 #include "Exception/Exception.h"
 #include "Renderer/ShaderProgram.h"
+#include "ResourceManager/ResourceManager.h"
 #include "Math/Square.h"
 #include "Math/TSquareFractal.h"
-
-const std::string vertex_source {
-    R"(
-#version 330 core
-layout (location = 0) in vec3 position;
-uniform mat4 projectionMatrix;
-uniform mat4 modelMatrix;
-void main()
-{
-    gl_Position = projectionMatrix * modelMatrix * vec4(position.x, position.y, position.z, 1.0);
-}
-)"
-};
-
-const std::string fragment_source {
-    R"(
-#version 330 core
-out vec4 color;
-void main()
-{
-	color = vec4(255.0 / 255, 255.0 / 255, 255.0 / 255, 1.0f);
-}
-)"
-};
 
 const GLuint WIDTH = 800, HEIGHT = 800;
 
@@ -45,7 +22,7 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
     }
 }
 
-int main() {
+int main(int argc, char** argv) {
     std::cout << "Starting GLFW context, OpenGL 4.1" << std::endl;
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -80,8 +57,11 @@ int main() {
     glm::mat4 modelMatrix(1.0f);
     modelMatrix = glm::translate(modelMatrix, glm::vec3(400.0f, 400.0f, 0.0f));
     try {
-        auto shader_program = std::make_shared<Renderer::ShaderProgram>(vertex_source,
-                                                                        fragment_source);
+        ResourceManager& resourceManager = ResourceManager::instance();
+        resourceManager.setExecutablePath(argv[0]);
+        auto shader_program = resourceManager.loadShaderProgram("DefaultShader",
+                                                                "res/vertex_shader.txt",
+                                                                "res/fragment_shader.txt");
         shader_program->setUniform("projectionMatrix", projectionMatrix);
         shader_program->setUniform("modelMatrix", modelMatrix);
 
