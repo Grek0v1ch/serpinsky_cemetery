@@ -76,6 +76,27 @@ namespace Math {
         glDeleteBuffers(1, &_vao);
     }
 
+    Square& Square::operator=(const Math::Square& o) noexcept {
+        if (this == &o) {
+            return *this;
+        }
+        _left_bottom = o._left_bottom;
+        _right_top = o._right_top;
+        _shader_program = o._shader_program;
+        std::array<GLuint, INDICES_SIZE> indices {
+            0, 1, 2,
+            2, 3, 0
+        };
+        std::array<GLfloat, VERTICES_SIZE> vertices {
+            _left_bottom.x, _left_bottom.y, 0.0,
+            _left_bottom.x, _right_top.y,   0.0,
+            _right_top.x,   _right_top.y,   0.0,
+            _right_top.x,   _left_bottom.y, 0.0
+        };
+        init_buffers(vertices, indices);
+        return *this;
+    }
+
     void Square::render() const {
             _shader_program->use();
             glBindVertexArray(_vao);

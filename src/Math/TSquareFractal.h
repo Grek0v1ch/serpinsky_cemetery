@@ -23,12 +23,12 @@ namespace Math {
         TSquareFractal(const glm::vec2& centre,
                        double length,
                        int iteration,
-                       std::shared_ptr<Renderer::ShaderProgram> shader_program) noexcept;
+                       const std::shared_ptr<Renderer::ShaderProgram>& shader_program) noexcept;
 
-        TSquareFractal(const TSquareFractal&) = delete;
-        TSquareFractal(TSquareFractal&&) = delete;
-        TSquareFractal& operator=(const TSquareFractal&) = delete;
-        TSquareFractal& operator=(TSquareFractal&&) = delete;
+        TSquareFractal(const TSquareFractal& o) = default;
+        TSquareFractal(TSquareFractal&&) = default;
+        TSquareFractal& operator=(const TSquareFractal&) = default;
+        TSquareFractal& operator=(TSquareFractal&&) = default;
 
         void render() const noexcept;
     };

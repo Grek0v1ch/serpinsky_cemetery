@@ -12,7 +12,9 @@ add_executable(serpinsky_cemetry
         src/Math/TSquareFractal.cpp
         src/Math/TSquareFractal.h
         src/ResourceManager/ResourceManager.cpp
-        src/ResourceManager/ResourceManager.h)
+        src/ResourceManager/ResourceManager.h
+        src/App/App.cpp
+        src/App/App.h)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)

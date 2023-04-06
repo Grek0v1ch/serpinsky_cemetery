@@ -22,9 +22,10 @@ namespace Math {
     TSquareFractal::TSquareFractal(const glm::vec2& centre,
                                    const double length,
                                    const int iterations,
-                                   std::shared_ptr<Renderer::ShaderProgram> shader_program) noexcept :
+                                   const std::shared_ptr<Renderer::ShaderProgram>& shader_program)
+                                   noexcept :
     _squares{},
-    _shader_program(std::move(shader_program)) {
+    _shader_program(shader_program) {
         gen_fractal(centre, length, iterations);
     }
 

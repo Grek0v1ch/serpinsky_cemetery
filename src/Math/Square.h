@@ -31,7 +31,7 @@ namespace Math {
         Square(Square&& o) noexcept;
         ~Square();
 
-        Square& operator=(const Square&) = delete;
+        Square& operator=(const Square&) noexcept;
 
         void render() const;
         [[nodiscard]]
