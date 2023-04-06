@@ -5,8 +5,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "../external/stb_image_write.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "../external/stb_image_write.h"
 
 #include "Exception/Exception.h"
 #include "Renderer/ShaderProgram.h"
@@ -92,10 +92,13 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
         fractal.render();
-        int* buffer = new int[ WIDTH * HEIGHT * 3 ];
-        glReadPixels(0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, buffer);
-        stbi_write_jpg("image.jpg", WIDTH, HEIGHT, GL_RGB, buffer, 0);
         glfwSwapBuffers(window);
+        int* buffer = new int[ WIDTH * HEIGHT * 3 ];
+        glPixelStorei(GL_PACK_ALIGNMENT, 4);
+        glReadBuffer(GL_FRONT);
+        glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+        stbi_flip_vertically_on_write(true);
+        stbi_write_png("img.jpg", width, height, 3, buffer, 0);
         delete[] buffer;
 
         while (!glfwWindowShouldClose(window)) {
