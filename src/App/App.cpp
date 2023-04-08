@@ -3,51 +3,72 @@
 #include <iostream>
 
 #include <glm/gtc/matrix_transform.hpp>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "../../external/stb_image_write.h"
 
 #include "../Math/SerpinskyCemetery.h"
 #include "../ResourceManager/ResourceManager.h"
 #include "../Renderer/ShaderProgram.h"
-#include "../../external/stb_image_write.h"
 
-App::App(int width, int height, const char* path) :
+App::App(const std::string& windowName, int width, int height, const std::string& path) :
     WIDTH(width),
     HEIGHT(height),
     _window(nullptr),
     _fractal(nullptr) {
-    init(path);
-}
-
-App::~App() {
-    glfwTerminate();
+    ResourceManager::instance().setExecutablePath(path);
+    init(windowName);
 }
 
 void App::setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept {
     _fractal = fractal;
 }
 
-void App::start() noexcept {
+void App::setLocation(const float left, const float right,
+                      const float bottom, const float top) noexcept {
+    glm::mat4 projectionMatrix =
+            glm::ortho(static_cast<float>(WIDTH) * left, static_cast<float>(WIDTH) * right,
+                       static_cast<float>(HEIGHT) * bottom, static_cast<float>(HEIGHT) * top,
+                       -100.0f, 100.0f);
+    ResourceManager& resourceManager = ResourceManager::instance();
+    auto shader_program = resourceManager.getShaderProgram("SpriteShader");
+    shader_program->setUniform("projectionMatrix", projectionMatrix);
+}
+
+void App::setKeyCallback(void (*func)(GLFWwindow *, int, int, int, int)) {
+    glfwSetKeyCallback(_window, func);
+}
+
+void App::render() const noexcept {
     glClear(GL_COLOR_BUFFER_BIT);
     if (_fractal) {
         _fractal->render();
     }
     glfwSwapBuffers(_window);
-    saveImage("img.jpg");
+}
+
+void App::start() noexcept {
+    render();
     while (! glfwWindowShouldClose(_window)) {
         glfwPollEvents();
     }
 }
 
 void App::saveImage(const std::string& filePath) const noexcept {
-    int* buffer = new int[ WIDTH * HEIGHT * 3 ];
+    int width, height;
+    glfwGetFramebufferSize(_window, &width, &height);
+    GLsizei nrChannels = 3;
+    GLsizei stride = nrChannels * width;
+    stride += (stride % 4) ? (4 - stride % 4) : 0;
+    GLsizei bufferSize = stride * height;
+    std::vector<char> buffer(bufferSize);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
     glReadBuffer(GL_FRONT);
-    glReadPixels(0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
     stbi_flip_vertically_on_write(true);
-    stbi_write_png(filePath.data(), WIDTH, HEIGHT, 3, buffer, 0);
-    delete[] buffer;
+    stbi_write_png(filePath.data(), width, height, nrChannels, buffer.data(), stride);
 }
 
-void App::init(const char* path) {
+void App::init(const std::string& windowName) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -56,7 +77,7 @@ void App::init(const char* path) {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    _window = glfwCreateWindow(WIDTH, HEIGHT, "MainWindow", nullptr, nullptr);
+    _window = glfwCreateWindow(WIDTH, HEIGHT, windowName.data(), nullptr, nullptr);
     if (! _window) {
         throw std::runtime_error("glfwCreateWindow failed!");
     }
@@ -74,8 +95,7 @@ void App::init(const char* path) {
     glm::mat4 modelMatrix(1.0f);
     // modelMatrix = glm::translate(modelMatrix, glm::vec3(100.0f, 0.0f, 0.0f));
     ResourceManager& resourceManager = ResourceManager::instance();
-    resourceManager.setExecutablePath(path);
-    auto shader_program = resourceManager.loadShaderProgram("DefaultShader",
+    auto shader_program = resourceManager.loadShaderProgram("SpriteShader",
                                                             "res/vertex_shader.txt",
                                                             "res/fragment_shader.txt");
     shader_program->setUniform("projectionMatrix", projectionMatrix);

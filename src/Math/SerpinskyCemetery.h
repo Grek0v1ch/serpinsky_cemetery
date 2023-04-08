@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include <glad/glad.h>
 
@@ -10,8 +11,8 @@ namespace Renderer {
 
 namespace Math {
     struct Coord {
-        GLfloat x;
-        GLfloat y;
+        unsigned int x;
+        unsigned int y;
     };
 
     struct Square {
@@ -19,21 +20,32 @@ namespace Math {
         Coord rightTop;
     };
 
+    enum class Color {
+        WHITE,
+        BLACK
+    };
+
     class SerpinskyCemetery {
     public:
+        SerpinskyCemetery(const SerpinskyCemetery&) = delete;
+        SerpinskyCemetery& operator=(const SerpinskyCemetery&) = delete;
+        SerpinskyCemetery& operator=(SerpinskyCemetery&&) = delete;
+
         SerpinskyCemetery(Coord leftBottom, Coord rightTop, int amountSteps,
                           const std::string& shaderName) noexcept;
-        ~SerpinskyCemetery();
+        ~SerpinskyCemetery() = default;
+        SerpinskyCemetery(SerpinskyCemetery&&) = default;
 
-        void render() const noexcept;
+        void render() noexcept;
+        unsigned char* get_pixels() noexcept;
+
     private:
-        void init_buffers() noexcept;
         void gen_fractal(Square square, int currSteps) noexcept;
-        [[nodiscard]] std::shared_ptr<std::vector<GLfloat>> makeVectorCoords() const noexcept;
+        void feel_pixels(const Square& square, Color color) noexcept;
 
-        std::vector<Square> _squares;
-        std::shared_ptr<Renderer::ShaderProgram> _shader_program;
-        GLuint _vao = 0;
-        GLuint _vbo = 0;
+        const unsigned int WIDTH;
+        const unsigned int HEIGHT;
+        std::vector<std::vector<Color>> _pixels;
+        std::shared_ptr<std::vector<unsigned char>> _data = nullptr;
     };
 }

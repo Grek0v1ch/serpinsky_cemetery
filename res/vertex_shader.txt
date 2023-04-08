@@ -1,12 +1,13 @@
-#version 330 core
+#version 410 core
+layout (location = 0) in vec2 vertexPosition;
+layout (location = 1) in vec2 textureCoords;
 
-layout (location = 0) in vec2 position;
+out vec2 texCoords;
 
-uniform mat4 projectionMatrix;
 uniform mat4 modelMatrix;
+uniform mat4 projectionMatrix;
 
-void main()
-{
-    gl_Position = projectionMatrix * modelMatrix *
-                  vec4(position.x, position.y, 0.0, 1.0);
+void main() {
+    texCoords = textureCoords;
+    gl_Position = projectionMatrix * modelMatrix * vec4(vertexPosition, 0.0, 1.0);
 }

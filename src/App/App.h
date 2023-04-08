@@ -11,23 +11,24 @@ namespace Math {
 
 class App {
 public:
-    GLFWwindow* _window;
-
-    App(const App&) = delete;
     App& operator=(const App&) = delete;
     App(App&&) = delete;
     App& operator=(App&&) = delete;
 
-    App(int width, int height, const char* path);
-    ~App();
+    App(const std::string& windowName, int width, int height, const std::string& path);
+    App(const App&) = default;
 
     void setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept;
+    void setLocation(float left, float right, float bottom, float top) noexcept;
 
     void start() noexcept;
+    void render() const noexcept;
     void saveImage(const std::string& filePath) const noexcept;
+    void setKeyCallback(void(*func)(GLFWwindow*, int, int, int, int));
 private:
-    void init(const char* path);
+    void init(const std::string& windowName);
 
+    GLFWwindow* _window;
     const int WIDTH;
     const int HEIGHT;
     std::shared_ptr<Math::SerpinskyCemetery> _fractal;
