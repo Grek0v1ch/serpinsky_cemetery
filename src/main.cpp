@@ -83,7 +83,7 @@ void change_step() {
     std::cout << "Change amount step\n";
     std::cout << "Input amount step: ";
     new_step = input_uint();
-    auto fractal = std::make_shared<Math::SerpinskyCemetery>(5);
+    auto fractal = std::make_shared<Math::SerpinskyCemetery>(new_step);
     fractal->set_WH(app->getWidth(), app->getHeight());
     app->setFractal(fractal);
 }
