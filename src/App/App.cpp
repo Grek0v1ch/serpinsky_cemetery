@@ -47,8 +47,8 @@ void App::render() const noexcept {
 }
 
 void App::start() noexcept {
-    render();
     while (! glfwWindowShouldClose(_window)) {
+        render();
         glfwPollEvents();
     }
 }

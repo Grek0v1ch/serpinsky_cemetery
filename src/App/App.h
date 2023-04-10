@@ -25,6 +25,8 @@ public:
     void render() const noexcept;
     void saveImage(const std::string& filePath) const noexcept;
     void setKeyCallback(void(*func)(GLFWwindow*, int, int, int, int));
+    [[nodiscard]] int getWidth() const noexcept { return WIDTH; }
+    [[nodiscard]] int getHeight() const noexcept { return HEIGHT; }
 private:
     void init(const std::string& windowName);
 
