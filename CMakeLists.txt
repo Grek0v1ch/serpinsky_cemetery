@@ -9,6 +9,8 @@ add_executable(serpinsky_cemetry
         src/Renderer/Texture2D.h
         src/Renderer/Sprite.cpp
         src/Renderer/Sprite.h
+        src/Renderer/Image.cpp
+        src/Renderer/Image.h
         src/Exception/Exception.cpp
         src/Exception/Exception.h
         src/Math/SerpinskyCemetery.cpp
