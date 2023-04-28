@@ -53,10 +53,6 @@ namespace Math {
 
         gen_fractal({ab_points.second, polygon.b, bc_points.first, v0}, currSteps - 1);
         gen_fractal({bc_points.second, polygon.c, cd_points.first, v1}, currSteps - 1);
-        std::cout << "Point1{" << da_points.first.x << " " << da_points.first.y << "}\n";
-        std::cout << "Point2{" << v2.x << " " << v2.y << "}\n";
-        std::cout << "Point3{" << cd_points.second.x << " " << cd_points.second.y << "}\n";
-        std::cout << "Point4{" << polygon.d.x << " " << polygon.d.y << "}\n";
         gen_fractal({da_points.first, v2, cd_points.second, polygon.d}, currSteps - 1);
         gen_fractal({polygon.a, ab_points.first, v3, da_points.second}, currSteps - 1);
     }
