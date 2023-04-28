@@ -20,6 +20,9 @@ namespace Math {
     }
 
     void SerpinskyCemetery::gen_fractal(Square square, int currSteps) noexcept {
+        if (currSteps <= 0) {
+            return;
+        }
         unsigned int dx = square.rightTop.x - square.leftBottom.x;
         unsigned int dy = square.rightTop.y - square.leftBottom.y;
         Square square1 {{square.leftBottom.x, square.leftBottom.y + dy / 3},
@@ -32,19 +35,17 @@ namespace Math {
         fill_pixels(square2, Color::WHITE);
         fill_pixels(square3, Color::WHITE);
         currSteps--;
-        if (currSteps > 0) {
-            gen_fractal({{square.leftBottom.x, square.leftBottom.y + dy / 3 * 2},
-                         {square.leftBottom.x + dx / 3, square.rightTop.y}},
-                        currSteps);
-            gen_fractal({{square.leftBottom},
-                         {square.leftBottom.x + dx / 3, square.leftBottom.y + dy / 3}},
-                        currSteps);
-            gen_fractal({{square.leftBottom.x + dx / 3 * 2, square.leftBottom.y},
-                         {square.rightTop.x, square.leftBottom.y + dy / 3}},
-                        currSteps);
-            gen_fractal({{square.leftBottom.x + dx / 3 * 2, square.leftBottom.y + dy / 3 * 2},
-                         {square.rightTop}}, currSteps);
-        }
+        gen_fractal({{square.leftBottom.x, square.leftBottom.y + dy / 3 * 2},
+                     {square.leftBottom.x + dx / 3, square.rightTop.y}},
+                    currSteps);
+        gen_fractal({{square.leftBottom},
+                     {square.leftBottom.x + dx / 3, square.leftBottom.y + dy / 3}},
+                    currSteps);
+        gen_fractal({{square.leftBottom.x + dx / 3 * 2, square.leftBottom.y},
+                     {square.rightTop.x, square.leftBottom.y + dy / 3}},
+                    currSteps);
+        gen_fractal({{square.leftBottom.x + dx / 3 * 2, square.leftBottom.y + dy / 3 * 2},
+                     {square.rightTop}}, currSteps);
     }
 
     void SerpinskyCemetery::render() noexcept {
@@ -69,11 +70,45 @@ namespace Math {
     }
 
     void SerpinskyCemetery::fill_pixels(const Square& square, Color color) noexcept {
-        for (std::size_t x = square.leftBottom.x; x < square.rightTop.x; x++) {
-            for (std::size_t y = square.leftBottom.y; y < square.rightTop.y; y++) {
-                _pixels->setColor(x, y, color);
+        fill_polygon({{(double)square.leftBottom.x, (double)square.leftBottom.y}, 
+                      {(double)square.leftBottom.x, (double)square.rightTop.y},
+                      {(double)square.rightTop.x, (double)square.rightTop.y},
+                      {(double)square.rightTop.x, (double)square.leftBottom.y}},
+                      color);
+    }
+
+    void SerpinskyCemetery::fill_polygon(const Polygon& o, Renderer::Color color) noexcept {
+        fill_triangle(o.a, o.b, o.c, color);
+        fill_triangle(o.c, o.d, o.a, color);
+    }
+
+    void SerpinskyCemetery::fill_triangle(
+        Vertex v0, 
+        Vertex v1, 
+        Vertex v2, 
+        Renderer::Color color
+    ) noexcept {
+        int min_x = ceil(std::min(std::min(v0.position.x, v1.position.x), v2.position.x));
+        int max_x = ceil(std::max(std::max(v0.position.x, v1.position.x), v2.position.x));
+        int min_y = ceil(std::min(std::min(v0.position.y, v1.position.y), v2.position.y));
+        int max_y = ceil(std::max(std::max(v0.position.y, v1.position.y), v2.position.y));
+        for (int x = min_x; x < max_x; ++x) {
+            for (int y = min_y; y < max_y; ++y) {
+                Point p = {static_cast<double>(x), static_cast<double>(y)};
+                double e10 = edge(v1.position, v0.position, p);
+                double e21 = edge(v2.position, v1.position, p);
+                double e02 = edge(v0.position, v2.position, p);
+                if (e10 >= 0 and e21 >= 0 and e02 >= 0) {
+                    _pixels->setColor(x, y, color);
+                }
             }
         }
+    }
+
+    double SerpinskyCemetery::edge(Point v0, Point v1, Point p) {
+            Vector a = p - v0;
+            Vector b = v1 - v0;
+            return a.y * b.x - a.x * b.y;
     }
 
     unsigned int SerpinskyCemetery::fix_amount_step(unsigned int amount_step) noexcept {

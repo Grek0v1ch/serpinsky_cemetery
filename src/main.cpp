@@ -20,7 +20,7 @@ void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mod
 int main(int argc, char** argv) {
     try {
         app = std::make_shared<App>("MainWindow", 729, 729, argv[0]);
-        auto fractal = std::make_shared<Math::SerpinskyCemetery>(5);
+        auto fractal = std::make_shared<Math::SerpinskyCemetery>(3);
         fractal->set_WH(app->getWidth(), app->getHeight());
         app->setFractal(fractal);
         app->setKeyCallback(keyCallback);
