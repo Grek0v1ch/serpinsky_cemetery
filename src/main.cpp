@@ -20,7 +20,11 @@ void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mod
 int main(int argc, char** argv) {
     try {
         app = std::make_shared<App>("MainWindow", 729, 729, argv[0]);
-        auto fractal = std::make_shared<Math::SerpinskyCemetery>(3);
+        auto fractal = std::make_shared<Math::SerpinskyCemetery>(Math::Polygon{{0., 0.},
+                                                                               {0., 0.5},
+                                                                               {1., 1.},
+                                                                               {1., 0.}},
+                                                                 2);
         fractal->set_WH(app->getWidth(), app->getHeight());
         app->setFractal(fractal);
         app->setKeyCallback(keyCallback);
@@ -83,9 +87,9 @@ void change_step() {
     std::cout << "Change amount step\n";
     std::cout << "Input amount step: ";
     new_step = input_uint();
-    auto fractal = std::make_shared<Math::SerpinskyCemetery>(new_step);
-    fractal->set_WH(app->getWidth(), app->getHeight());
-    app->setFractal(fractal);
+    // auto fractal = std::make_shared<Math::SerpinskyCemetery>(new_step);
+    // fractal->set_WH(app->getWidth(), app->getHeight());
+    // app->setFractal(fractal);
 }
 
 void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mode) {

@@ -8,7 +8,7 @@ namespace Renderer {
     WIDTH(width),
     HEIGHT(height),
     SIZE(width * height * 3),
-    _data(SIZE, 0) {}
+    _data(SIZE, 170) {}
 
     void Image::setColor(unsigned int x, unsigned int y, Color color) {
         if (x >= WIDTH or y >= HEIGHT) {
