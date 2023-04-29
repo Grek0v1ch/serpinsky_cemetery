@@ -12,19 +12,25 @@
 namespace Math {
     using namespace Renderer;
 
-    SerpinskyCemetery::SerpinskyCemetery(const Polygon initPolygon, int amountSteps = 1)
+    SerpinskyCemetery::SerpinskyCemetery(const Polygon user_polygon, int amountSteps = 1)
     noexcept : _size(gen_size(fix_amount_step(amountSteps)))
              , WIDTH(_size)
              , HEIGHT(_size)
              , _pixels(std::make_shared<Image>(_size, _size)) {
         double width = static_cast<double>(WIDTH);
         double height = static_cast<double>(HEIGHT);
-        Polygon scale_init_polygon = {{initPolygon.a.x * width, initPolygon.a.y * height},
-                                      {initPolygon.b.x * width, initPolygon.b.y * height},
-                                      {initPolygon.c.x * width, initPolygon.c.y * height},
-                                      {initPolygon.d.x * width, initPolygon.d.y * height}};
-        fill_polygon(scale_init_polygon, Color::BLACK);
-        gen_fractal(scale_init_polygon,amountSteps);
+        _init_polygon = {{user_polygon.a.x * width, user_polygon.a.y * height},
+                         {user_polygon.b.x * width, user_polygon.b.y * height},
+                         {user_polygon.c.x * width, user_polygon.c.y * height},
+                         {user_polygon.d.x * width, user_polygon.d.y * height}};
+        fill_polygon(_init_polygon, Color::BLACK);
+        gen_fractal(_init_polygon, amountSteps);
+    }
+
+    void SerpinskyCemetery::set_step(unsigned int amount_step) noexcept {
+        amount_step = fix_amount_step(amount_step);
+        fill_polygon(_init_polygon, Color::BLACK);
+        gen_fractal(_init_polygon, amount_step);
     }
 
     void SerpinskyCemetery::gen_fractal(const Polygon polygon, int currSteps) noexcept {

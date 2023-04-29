@@ -87,9 +87,9 @@ void change_step() {
     std::cout << "Change amount step\n";
     std::cout << "Input amount step: ";
     new_step = input_uint();
-    // auto fractal = std::make_shared<Math::SerpinskyCemetery>(new_step);
-    // fractal->set_WH(app->getWidth(), app->getHeight());
-    // app->setFractal(fractal);
+    auto fractal = app->getFractal();
+    fractal->set_step(new_step);
+    app->render();
 }
 
 void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mode) {

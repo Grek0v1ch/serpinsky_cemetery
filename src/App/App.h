@@ -18,6 +18,8 @@ public:
     App(const std::string& windowName, int width, int height, const std::string& path);
     App(const App&) = default;
 
+    std::shared_ptr<Math::SerpinskyCemetery> getFractal() const noexcept;
+
     void setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept;
     void setLocation(float left, float right, float bottom, float top) noexcept;
 

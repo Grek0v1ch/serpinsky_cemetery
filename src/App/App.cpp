@@ -19,6 +19,10 @@ App::App(const std::string& windowName, int width, int height, const std::string
     init(windowName);
 }
 
+std::shared_ptr<Math::SerpinskyCemetery> App::getFractal() const noexcept {
+    return _fractal;
+}
+
 void App::setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept {
     _fractal = fractal;
 }

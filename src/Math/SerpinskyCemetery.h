@@ -20,12 +20,13 @@ namespace Math {
         SerpinskyCemetery& operator=(SerpinskyCemetery&&) = delete;
 
     public:
-        SerpinskyCemetery(const Polygon initPolygon, int amountSteps) noexcept;
+        SerpinskyCemetery(const Polygon user_polygon, int amountSteps) noexcept;
         ~SerpinskyCemetery() = default;
         SerpinskyCemetery(SerpinskyCemetery&&) = default;
 
         void render() noexcept;
         void set_WH(unsigned int width, unsigned int height) noexcept;
+        void set_step(unsigned int amount_step) noexcept;
         const unsigned char* get_pixels() noexcept;
 
     private:
@@ -65,6 +66,7 @@ namespace Math {
         const unsigned int _size;
         unsigned int WIDTH;
         unsigned int HEIGHT;
+        Polygon _init_polygon;
         std::shared_ptr<Renderer::Image> _pixels;
     };
 }
