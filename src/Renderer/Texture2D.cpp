@@ -34,11 +34,9 @@ namespace Renderer {
         glDeleteTextures(1, &_id);
     }
 
-    Texture2D::Texture2D(Renderer::Texture2D&& o) noexcept {
-        _id = o._id;
+    Texture2D::Texture2D(Renderer::Texture2D&& o) noexcept : _id(o._id), _width(o._width)
+                                                           , _height(o._height) {
         o._id = 0;
-        _width = o._width;
-        _height = o._height;
     }
 
     Texture2D& Texture2D::operator=(Renderer::Texture2D&& o) noexcept {

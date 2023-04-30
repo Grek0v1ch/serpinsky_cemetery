@@ -9,6 +9,7 @@
 
 namespace Renderer {
     class Image;
+    class Sprite;
     enum class Color;
 }
 
@@ -20,53 +21,43 @@ namespace Math {
         SerpinskyCemetery& operator=(SerpinskyCemetery&&) = delete;
 
     public:
-        SerpinskyCemetery(const Polygon user_polygon, int amountSteps) noexcept;
-        ~SerpinskyCemetery() = default;
+        SerpinskyCemetery(const Polygon& userPolygon, int amountSteps) noexcept;
         SerpinskyCemetery(SerpinskyCemetery&&) = default;
 
+    public:
         void render() noexcept;
-        void set_WH(unsigned int width, unsigned int height) noexcept;
-        void set_step(unsigned int amount_step) noexcept;
-        const unsigned char* get_pixels() noexcept;
+        void setWH(unsigned int newViewWidth, unsigned int newViewHeight) noexcept;
+        void setStep(unsigned int amountStep) noexcept;
 
     private:
-        void gen_fractal(const Polygon square,
-                         int currSteps) noexcept;
+        void initSprite() noexcept;
 
-        void fill_polygon(const Polygon& o,
-                          Renderer::Color color) noexcept;
+        void genFractal(const Polygon& square, int currSteps) noexcept;
 
-        void fill_triangle(Point v0,
-                           Point v1,
-                           Point v2,
-                           Renderer::Color color) noexcept;
+        void fillPolygon(const Polygon& o, Renderer::Color color) noexcept;
 
-        double edge(Point v0,
-                    Point v1,
-                    Point p) const noexcept;
+        void fillTriangle(Point v0, Point v1, Point v2, Renderer::Color color) noexcept;
 
-        Point div_segment_in_ratio(const Point v0,
-                                   const Point v1,
-                                   const double ratio) const noexcept;
+        double edge(Point v0, Point v1, Point p) const noexcept;
 
-        std::pair<Point, Point> get_2_points_in_ratio(const Point v0,
-                                                      const Point v1,
-                                                      const double ratio) const noexcept;
+        Point divSegmentInRatio(const Point& v0, const Point& v1, double ratio) const noexcept;
 
-        Point get_intersection_2_segment(const Point v0,
-                                         const Point v1,
-                                         const Point v2,
-                                         const Point v3) const noexcept;
+        std::pair<Point, Point> getTwoPointsinRatio(const Point& v0, const Point& v1,
+                                                    double ratio) const noexcept;
+
+        Point getIntersectionTwoSegment(const Point& v0, const Point& v1, const Point& v2,
+                                        const Point& v3) const noexcept;
         [[nodiscard]]
-        static unsigned int fix_amount_step(unsigned int amount_step) noexcept;
+        static unsigned int fixAmountStep(unsigned int amountStep) noexcept;
 
-        [[nodiscard]] static unsigned int gen_size(unsigned int amount_step) noexcept;
+        [[nodiscard]]
+        static unsigned int genSize(unsigned int amountStep) noexcept;
 
     private:
-        const unsigned int _size;
-        unsigned int WIDTH;
-        unsigned int HEIGHT;
-        Polygon _init_polygon;
-        std::shared_ptr<Renderer::Image> _pixels;
+        unsigned int _viewWidth;
+        unsigned int _viewHeight;
+        Polygon _initPolygon;
+        std::shared_ptr<Renderer::Image> _img;
+        std::shared_ptr<Renderer::Sprite> _sprite;
     };
 }

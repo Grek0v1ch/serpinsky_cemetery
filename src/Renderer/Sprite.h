@@ -11,18 +11,27 @@ namespace Renderer {
     class ShaderProgram;
     class Sprite {
     public:
+        Sprite(const Sprite&) = delete;
+        Sprite& operator=(const Sprite&) = delete;
+
+    public:
         Sprite(const std::shared_ptr<Texture2D> texture,
                const std::shared_ptr<ShaderProgram> shaderProgram,
                const glm::vec2& position = glm::vec2{0.0f},
                const glm::vec2& size = glm::vec2{1.0f},
                float rotation = 0.0);
-       ~Sprite();
-       Sprite(const Sprite&) = delete;
-       Sprite& operator=(const Sprite&) = delete;
+        ~Sprite();
 
+    public:
        void render() const;
+
+       [[maybe_unused]]
        void setPosition(const glm::vec2& position);
+
+       [[maybe_unused]]
        void setSize(const glm::vec2& size);
+       
+       [[maybe_unused]]
        void setRotation(float rotation);
 
         glm::vec2 size() const noexcept { return  _size; }

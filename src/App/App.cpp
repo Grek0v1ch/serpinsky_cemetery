@@ -10,11 +10,11 @@
 #include "../ResourceManager/ResourceManager.h"
 #include "../Renderer/ShaderProgram.h"
 
-App::App(const std::string& windowName, int width, int height, const std::string& path) :
-    WIDTH(width),
-    HEIGHT(height),
-    _window(nullptr),
-    _fractal(nullptr) {
+App::App(const std::string& windowName, int width, int height, const std::string& path)
+: _window(nullptr)
+, WIDTH(width)
+, HEIGHT(height)
+, _fractal(nullptr) {
     ResourceManager::instance().setExecutablePath(path);
     init(windowName);
 }
@@ -33,9 +33,9 @@ void App::setLocation(const float left, const float right,
             glm::ortho(static_cast<float>(WIDTH) * left, static_cast<float>(WIDTH) * right,
                        static_cast<float>(HEIGHT) * bottom, static_cast<float>(HEIGHT) * top,
                        -100.0f, 100.0f);
-    ResourceManager& resourceManager = ResourceManager::instance();
-    auto shader_program = resourceManager.getShaderProgram("SpriteShader");
-    shader_program->setUniform("projectionMatrix", projectionMatrix);
+    const ResourceManager& resourceManager = ResourceManager::instance();
+    auto shaderProgram = resourceManager.getShaderProgram("SpriteShader");
+    shaderProgram->setUniform("projectionMatrix", projectionMatrix);
 }
 
 void App::setKeyCallback(void (*func)(GLFWwindow *, int, int, int, int)) {
@@ -97,11 +97,10 @@ void App::init(const std::string& windowName) {
                                             0.0f, static_cast<float>(HEIGHT),
                                             -100.0f, 100.0f);
     glm::mat4 modelMatrix(1.0f);
-    // modelMatrix = glm::translate(modelMatrix, glm::vec3(100.0f, 0.0f, 0.0f));
     ResourceManager& resourceManager = ResourceManager::instance();
-    auto shader_program = resourceManager.loadShaderProgram("SpriteShader",
+    auto shaderProgram = resourceManager.loadShaderProgram("SpriteShader",
                                                             "res/vertex_shader.txt",
                                                             "res/fragment_shader.txt");
-    shader_program->setUniform("projectionMatrix", projectionMatrix);
-    shader_program->setUniform("modelMatrix", modelMatrix);
+    shaderProgram->setUniform("projectionMatrix", projectionMatrix);
+    shaderProgram->setUniform("modelMatrix", modelMatrix);
 }

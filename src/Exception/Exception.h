@@ -6,10 +6,10 @@
 namespace Exception {
     class Exception : public std::exception {
     private:
-        std::string m_msg;
+        std::string _msg;
 
     public:
-        Exception(const std::string& msg) noexcept;
+        explicit Exception(const std::string& msg) noexcept;
         Exception(const Exception&) noexcept = default;
         ~Exception() override = default;
 

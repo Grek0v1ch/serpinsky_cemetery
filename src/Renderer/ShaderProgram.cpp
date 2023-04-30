@@ -8,7 +8,7 @@
 
 namespace Renderer {
     ShaderProgram::ShaderProgram(const std::string& vertexShaderSource,
-                                 const std::string& fragmentShaderSource) : program_ID(0) {
+                                 const std::string& fragmentShaderSource) : _programID(0) {
         // Сначала нужно скомпилировать вершинный и фрагментный шейдеры
         GLuint vertexShader;
         try {
@@ -26,39 +26,39 @@ namespace Renderer {
             throw Exception::Exception(msg);
         }
         // Создаем объект программы и собираем шейдеры
-        program_ID = glCreateProgram();
-        glAttachShader(program_ID, vertexShader);
-        glAttachShader(program_ID, fragmentShader);
-        glLinkProgram(program_ID);
+        _programID = glCreateProgram();
+        glAttachShader(_programID, vertexShader);
+        glAttachShader(_programID, fragmentShader);
+        glLinkProgram(_programID);
         // Чистим память
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
         // Сообщаем об ошибках, если они есть
         GLint success;
         GLchar infoLog[1024];
-        glGetProgramiv(program_ID, GL_LINK_STATUS, &success);
+        glGetProgramiv(_programID, GL_LINK_STATUS, &success);
         if (! success) {
-            glGetProgramInfoLog(program_ID, 1024, nullptr, infoLog);
+            glGetProgramInfoLog(_programID, 1024, nullptr, infoLog);
             std::string msg = std::string{"Linking shader program error: "} + infoLog;
             throw Exception::Exception(msg);
         }
     }
 
-    ShaderProgram::ShaderProgram(Renderer::ShaderProgram&& shaderProgram) noexcept {
-        program_ID = shaderProgram.program_ID;
-        shaderProgram.program_ID = 0;
+    ShaderProgram::ShaderProgram(Renderer::ShaderProgram&& shaderProgram)
+    noexcept : _programID(shaderProgram._programID) {
+        shaderProgram._programID = 0;
     }
 
     ShaderProgram::~ShaderProgram() {
-        glDeleteProgram(program_ID);
+        glDeleteProgram(_programID);
     }
 
     void ShaderProgram::use() const {
-        glUseProgram(program_ID);
+        glUseProgram(_programID);
     }
 
     void ShaderProgram::setUniform(const std::string& name, const glm::mat4& matrix) {
-        auto location = glGetUniformLocation(program_ID, name.c_str());
+        auto location = glGetUniformLocation(_programID, name.c_str());
         if (location == -1) {
             std::cerr << "Not find uniform " << name << std::endl;
             return;

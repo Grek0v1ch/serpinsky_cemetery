@@ -15,19 +15,22 @@ namespace Renderer {
         Image(Image&&) = delete;
         Image& operator=(const Image&) = delete;
         Image& operator=(Image&&) = delete;
-
+    public:
         Image(unsigned int width, unsigned int height) noexcept;
 
-        void setColor(unsigned int x, unsigned int y, Color color);
-        [[nodiscard]]
-        const unsigned char* getData() const noexcept { return _data.data(); }
+    public:
+        unsigned int width() const noexcept { return WIDTH; }
 
-        void print() const noexcept;
+        unsigned int height() const noexcept { return HEIGHT; }
+
+        void setColor(unsigned int x, unsigned int y, Color color);
+
+        [[nodiscard]]
+        const unsigned char* data() const noexcept { return _data.data(); }
 
     private:
         const unsigned int WIDTH;
         const unsigned int HEIGHT;
-        const size_t SIZE;
         std::vector<unsigned char> _data;
     };
 }

@@ -7,8 +7,7 @@ namespace Renderer {
     Image::Image(const unsigned int width, const unsigned int height) noexcept :
     WIDTH(width),
     HEIGHT(height),
-    SIZE(width * height * 3),
-    _data(SIZE, 170) {}
+    _data(WIDTH * HEIGHT * 3, 170) {}
 
     void Image::setColor(unsigned int x, unsigned int y, Color color) {
         if (x >= WIDTH or y >= HEIGHT) {
@@ -28,18 +27,6 @@ namespace Renderer {
                 break;
             default:
                 break;
-        }
-    }
-
-    void Image::print() const noexcept {
-        for (size_t j = 0; j < HEIGHT; j++) {
-            for (size_t i = 0; i < WIDTH * 3; i += 3) {
-                std::cout << (int)_data[j * WIDTH * 3 + i]
-                          << (int)_data[j * WIDTH * 3 + i + 1]
-                          << (int)_data[j * WIDTH * 3 + i + 2]
-                          << ' ';
-            }
-            std::cout << '\n';
         }
     }
 }

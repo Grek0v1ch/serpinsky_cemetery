@@ -10,12 +10,12 @@ namespace Renderer {
                    const std::shared_ptr<ShaderProgram> pShaderProgram,
                    const glm::vec2& position,
                    const glm::vec2& size,
-                   const float rotation) :
-                   _texture(std::move(pTexture)),
-                   _shaderProgram(std::move(pShaderProgram)),
-                   _position(position),
-                   _size(size),
-                   _rotation(rotation) {
+                   const float rotation)
+    : _texture(std::move(pTexture))
+    , _shaderProgram(std::move(pShaderProgram))
+    , _position(position)
+    , _size(size)
+    , _rotation(rotation) {
         const GLfloat vertexCoords[] {
             // 2--3  4
             // | / / |

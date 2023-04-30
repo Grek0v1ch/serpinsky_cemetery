@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
                                                                                {1., 1.},
                                                                                {1., 0.}},
                                                                  2);
-        fractal->set_WH(app->getWidth(), app->getHeight());
+        fractal->setWH(app->getWidth(), app->getHeight());
         app->setFractal(fractal);
         app->setKeyCallback(keyCallback);
         app->start();
@@ -58,7 +58,7 @@ unsigned int input_uint() {
     while (true) {
         try {
             return std::stoi(str);
-        } catch (std::invalid_argument& ex) {
+        } catch (const std::invalid_argument& ex) {
             std::cout << "Try again: ";
         }
     }
@@ -88,7 +88,7 @@ void change_step() {
     std::cout << "Input amount step: ";
     new_step = input_uint();
     auto fractal = app->getFractal();
-    fractal->set_step(new_step);
+    fractal->setStep(new_step);
     app->render();
 }
 

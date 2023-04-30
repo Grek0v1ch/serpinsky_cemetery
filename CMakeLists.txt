@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.23)
 project(serpinsky_cemetry)
 
+set(CMAKE_CXX_FLAGS  "-Wall -Werror -pedantic")
+
 add_executable(serpinsky_cemetry
         src/main.cpp
         src/Renderer/ShaderProgram.cpp
@@ -45,3 +47,5 @@ add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PROJECT_NAME}>/res)
+
+# cppcheck --enable=all --suppress='*:external/*' --template="[{severity}][{id}] {message} {callstack} (On {file}:{line})" -Isrc ./src 1>/dev/null 2> err.txt
