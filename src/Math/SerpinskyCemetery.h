@@ -26,7 +26,7 @@ namespace Math {
 
     public:
         void render() noexcept;
-        void setWH(unsigned int newViewWidth, unsigned int newViewHeight) noexcept;
+        void setWH(unsigned int newWidth, unsigned int newHeight) noexcept;
         void setStep(unsigned int amountStep) noexcept;
 
     private:
@@ -54,9 +54,8 @@ namespace Math {
         static unsigned int genSize(unsigned int amountStep) noexcept;
 
     private:
-        unsigned int _viewWidth;
-        unsigned int _viewHeight;
         Polygon _initPolygon;
+        unsigned int _amountSteps;
         std::shared_ptr<Renderer::Image> _img;
         std::shared_ptr<Renderer::Sprite> _sprite;
     };

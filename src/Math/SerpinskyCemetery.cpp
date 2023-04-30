@@ -13,18 +13,17 @@ namespace Math {
     using namespace Renderer;
 
     SerpinskyCemetery::SerpinskyCemetery(const Polygon& userPolygon, int amountSteps = 1)
-    noexcept : _viewWidth(genSize(fixAmountStep(amountSteps)))
-             , _viewHeight(_viewWidth)
-             , _img(std::make_shared<Image>(_viewWidth, _viewHeight))
+    noexcept : _amountSteps(fixAmountStep(amountSteps))
+             , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
              , _sprite(nullptr) {
-        double width = static_cast<double>(_viewWidth);
-        double height = static_cast<double>(_viewHeight);
+        double width = static_cast<double>(genSize(_amountSteps));
+        double height = static_cast<double>(genSize(_amountSteps));
         _initPolygon = {{userPolygon.a.x * width, userPolygon.a.y * height},
                         {userPolygon.b.x * width, userPolygon.b.y * height},
                         {userPolygon.c.x * width, userPolygon.c.y * height},
                         {userPolygon.d.x * width, userPolygon.d.y * height}};
         fillPolygon(_initPolygon, Color::BLACK);
-        genFractal(_initPolygon, amountSteps);
+        genFractal(_initPolygon, _amountSteps);
         initSprite();
     }
 
@@ -34,25 +33,27 @@ namespace Math {
         }
     }
 
-    void SerpinskyCemetery::setWH(const unsigned int newViewWidth,
-                                  const unsigned int newViewHeight) noexcept {
-        _viewWidth = newViewWidth;
-        _viewHeight = newViewHeight;
+    void SerpinskyCemetery::setWH(const unsigned int newWidth,
+                                  const unsigned int newHeight) noexcept {
+        _sprite->setSize(glm::vec2(newWidth, newHeight));
     }
 
-    void SerpinskyCemetery::setStep(unsigned int amount_step) noexcept {
-        amount_step = fixAmountStep(amount_step);
+    void SerpinskyCemetery::setStep(unsigned int amountSteps) noexcept {
+        _amountSteps = fixAmountStep(amountSteps);
         fillPolygon(_initPolygon, Color::BLACK);
-        genFractal(_initPolygon, amount_step);
+        genFractal(_initPolygon, _amountSteps);
+        initSprite();
     }
 
     void SerpinskyCemetery::initSprite() noexcept {
+        unsigned int size = genSize(_amountSteps);
         std::shared_ptr<Texture2D> texture = std::make_shared<Texture2D>(_img->width(),
                                                                          _img->height(),
                                                                          _img->data());
         const ResourceManager& res = ResourceManager::instance();
         _sprite = std::make_shared<Sprite>(texture, res.getShaderProgram("SpriteShader"),
-                                           glm::vec2{0.0f}, glm::vec2{_viewWidth, _viewHeight});
+                                           glm::vec2{0.0f},
+                                           (_sprite ? _sprite->size() : glm::vec2(size)));
     }
 
     void SerpinskyCemetery::genFractal(const Polygon& polygon, int currSteps) noexcept {
