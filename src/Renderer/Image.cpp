@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
 
 namespace Renderer {
     Image::Image(const unsigned int width, const unsigned int height) noexcept :
@@ -28,5 +29,9 @@ namespace Renderer {
             default:
                 break;
         }
+    }
+
+    void Image::clear() noexcept {
+        std::fill(_data.begin(), _data.end(), 170);
     }
 }

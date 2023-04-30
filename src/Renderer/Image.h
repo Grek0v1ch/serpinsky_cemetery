@@ -25,6 +25,8 @@ namespace Renderer {
 
         void setColor(unsigned int x, unsigned int y, Color color);
 
+        void clear() noexcept;
+
         [[nodiscard]]
         const unsigned char* data() const noexcept { return _data.data(); }
 
