@@ -13,15 +13,11 @@ namespace Math {
     using namespace Renderer;
 
     SerpinskyCemetery::SerpinskyCemetery(const Polygon& userPolygon, int amountSteps = 1)
-    noexcept : _amountSteps(fixAmountStep(amountSteps))
+    noexcept : _initPolygon(userPolygon)
+             , _amountSteps(fixAmountStep(amountSteps))
              , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
              , _sprite(nullptr) {
-        double width = static_cast<double>(genSize(_amountSteps));
-        double height = static_cast<double>(genSize(_amountSteps));
-        _initPolygon = {{userPolygon.a.x * width, userPolygon.a.y * height},
-                        {userPolygon.b.x * width, userPolygon.b.y * height},
-                        {userPolygon.c.x * width, userPolygon.c.y * height},
-                        {userPolygon.d.x * width, userPolygon.d.y * height}};
+        _initPolygon.scale(static_cast<double>(genSize(_amountSteps)));
         fillPolygon(_initPolygon, Color::BLACK);
         genFractal(_initPolygon, _amountSteps);
         initSprite();
