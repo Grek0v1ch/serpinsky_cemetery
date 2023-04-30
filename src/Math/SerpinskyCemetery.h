@@ -66,17 +66,17 @@ namespace Math {
         Vector getIntersectionTwoSegment(const Vector& v0, const Vector& v1, const Vector& v2,
                                         const Vector& v3) const noexcept;
         [[nodiscard]]
-        static unsigned int fixAmountStep(unsigned int amountStep) noexcept;
+        unsigned int fixAmountStep(unsigned int amountStep) noexcept;
 
         [[nodiscard]]
         static unsigned int genSize(unsigned int amountStep) noexcept;
 
     private:
+        Renderer::ViewPort _viewPort;
         Polygon _initPolygon;
         unsigned int _amountSteps;
         double _ratio;
         std::shared_ptr<Renderer::Image> _img;
         std::shared_ptr<Renderer::Sprite> _sprite;
-        Renderer::ViewPort _viewPort;
     };
 }

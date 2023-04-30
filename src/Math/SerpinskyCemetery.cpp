@@ -9,17 +9,19 @@
 #include "../Renderer/Sprite.h"
 #include "../Renderer/Image.h"
 
+#define IMAGE_SIZE 729
+
 namespace Math {
     using namespace Renderer;
 
     SerpinskyCemetery::SerpinskyCemetery(const Polygon& userPolygon, const int amountSteps,
                                          const double ratio)
-    : _initPolygon(userPolygon)
+    : _viewPort{{0, 0}, {1, 1}}
+    , _initPolygon(userPolygon)
     , _amountSteps(fixAmountStep(amountSteps))
     , _ratio(std::abs(ratio))
-    , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
-    , _sprite(nullptr)
-    , _viewPort{{0, 0}, {1, 1}} {
+    , _img(std::make_shared<Image>(IMAGE_SIZE, IMAGE_SIZE))
+    , _sprite(nullptr) {
         makeFractal();
     }
 
@@ -36,7 +38,7 @@ namespace Math {
 
     void SerpinskyCemetery::setStep(unsigned int amountSteps) {
         _amountSteps = fixAmountStep(amountSteps);
-        _img = std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps));
+        _img = std::make_shared<Image>(IMAGE_SIZE, IMAGE_SIZE);
         makeFractal();
     }
 
@@ -58,19 +60,18 @@ namespace Math {
     }
 
     void SerpinskyCemetery::initSprite() noexcept {
-        unsigned int size = genSize(_amountSteps);
         std::shared_ptr<Texture2D> texture = std::make_shared<Texture2D>(_img->width(),
                                                                          _img->height(),
                                                                          _img->data());
         const ResourceManager& res = ResourceManager::instance();
         _sprite = std::make_shared<Sprite>(texture, res.getShaderProgram("SpriteShader"),
                                            glm::vec2{0.f},
-                                           (_sprite ? _sprite->size() : glm::vec2(size)));
+                                           (_sprite ? _sprite->size() : glm::vec2(IMAGE_SIZE)));
     }
 
     void SerpinskyCemetery::makeFractal() {
         Polygon startPolygon = _initPolygon;
-        startPolygon.scale(static_cast<double>(genSize(_amountSteps)));
+        startPolygon.scale(IMAGE_SIZE);
         fillPolygon(startPolygon, Color::BLACK);
         genFractal(startPolygon, _amountSteps);
         initSprite();
@@ -123,7 +124,7 @@ namespace Math {
         v2 = crop(v2 - temp);
         auto diff = _viewPort.rightTop - _viewPort.leftBottom;
         double scaleCoefX = diff.x > 0 ? 1. / diff.x : 0.;
-        double scaleCoefY = diff.y ? 1. / diff.y : 0.;
+        double scaleCoefY = diff.y > 0 ? 1. / diff.y : 0.;
         v0.scale(scaleCoefX, scaleCoefY);
         v1.scale(scaleCoefX, scaleCoefY);
         v2.scale(scaleCoefX, scaleCoefY);
@@ -184,19 +185,21 @@ namespace Math {
     }
 
     unsigned int SerpinskyCemetery::fixAmountStep(const unsigned int amountStep) noexcept {
-        if (amountStep > 8) {
-            return 8;
-        }
-        else {
+        auto diff = _viewPort.rightTop - _viewPort.leftBottom;
+        double scaleCoefX = diff.x > 0 ? 1. / diff.x : 0.;
+        double scaleCoefY = diff.y > 0 ? 1. / diff.y : 0.;
+        double scaleCoef = std::max(scaleCoefX, scaleCoefY);
+        int optimalAmountStep = static_cast<int>(std::log(IMAGE_SIZE * scaleCoef) / std::log(3));
+        if (optimalAmountStep >= amountStep) {
             return amountStep;
+            std::cout << amountStep << std::endl;
+        } else {
+            return optimalAmountStep;
+            std::cout << optimalAmountStep << std::endl;
         }
     }
 
     unsigned int SerpinskyCemetery::genSize(const unsigned int amountStep) noexcept {
-        if (amountStep <= 5) {
-            return 243;
-        } else {
-            return static_cast<unsigned int>(pow(3, amountStep));
-        }
+        return 729;
     }
 }
