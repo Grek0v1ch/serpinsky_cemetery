@@ -33,8 +33,12 @@ namespace Math {
 
         void setRatio(double ratio);
 
+        void setInitPolygon(const Polygon& initPolygon);
+
     private:
         void initSprite() noexcept;
+
+        void makeFractal();
 
         void genFractal(const Polygon& square, int currSteps);
 

@@ -19,10 +19,7 @@ namespace Math {
     , _ratio(std::abs(ratio))
     , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
     , _sprite(nullptr) {
-        _initPolygon.scale(static_cast<double>(genSize(_amountSteps)));
-        fillPolygon(_initPolygon, Color::BLACK);
-        genFractal(_initPolygon, _amountSteps);
-        initSprite();
+        makeFractal();
     }
 
     void SerpinskyCemetery::render() noexcept {
@@ -38,16 +35,19 @@ namespace Math {
 
     void SerpinskyCemetery::setStep(unsigned int amountSteps) {
         _amountSteps = fixAmountStep(amountSteps);
-        fillPolygon(_initPolygon, Color::BLACK);
-        genFractal(_initPolygon, _amountSteps);
-        initSprite();
+        _img = std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps));
+        makeFractal();
     }
 
     void SerpinskyCemetery::setRatio(double ratio) {
         _ratio = std::abs(ratio);
-        fillPolygon(_initPolygon, Color::BLACK);
-        genFractal(_initPolygon, _amountSteps);
-        initSprite();
+        makeFractal();
+    }
+
+    void SerpinskyCemetery::setInitPolygon(const Polygon& initPolygon) {
+        _initPolygon = initPolygon;
+        _img->clear();
+        makeFractal();
     }
 
     void SerpinskyCemetery::initSprite() noexcept {
@@ -59,6 +59,14 @@ namespace Math {
         _sprite = std::make_shared<Sprite>(texture, res.getShaderProgram("SpriteShader"),
                                            glm::vec2{0.f},
                                            (_sprite ? _sprite->size() : glm::vec2(size)));
+    }
+
+    void SerpinskyCemetery::makeFractal() {
+        Polygon startPolygon = _initPolygon;
+        startPolygon.scale(static_cast<double>(genSize(_amountSteps)));
+        fillPolygon(startPolygon, Color::BLACK);
+        genFractal(startPolygon, _amountSteps);
+        initSprite();
     }
 
     void SerpinskyCemetery::genFractal(const Polygon& polygon, int currSteps) {

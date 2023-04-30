@@ -3,6 +3,7 @@
 
 #include "Exception/Exception.h"
 #include "Math/SerpinskyCemetery.h"
+#include "Math/Geometry.hpp"
 #include "App/App.h"
 
 std::shared_ptr<App> app;
@@ -75,6 +76,18 @@ double inputDouble() {
     }
 }
 
+std::pair<double, double> inputTwoDouble() {
+    while (true) {
+        try {
+            std::string str1, str2;
+            std::cin >> str1 >> str2;
+            return {std::stod(str1), std::stod(str2)};
+        } catch (const std::invalid_argument& ex) {
+            std::cout << "Try again: ";
+        }
+    }
+}
+
 void change_location() {
     float left;
     float right;
@@ -111,14 +124,43 @@ void changeRatio() {
     app->render();
 }
 
+void changeInitPolygon() {
+    Math::Polygon newPolygon;
+    std::cout << "Change init polygon\n";
+    std::cout << "Input point A: ";
+    auto tmp = inputTwoDouble();
+    newPolygon.a.x = tmp.first;
+    newPolygon.a.y = tmp.second;
+
+    std::cout << "Input point B: ";
+    tmp = inputTwoDouble();
+    newPolygon.b.x = tmp.first;
+    newPolygon.b.y = tmp.second;
+
+    std::cout << "Input point C: ";
+    tmp = inputTwoDouble();
+    newPolygon.c.x = tmp.first;
+    newPolygon.c.y = tmp.second;
+
+    std::cout << "Input point D: ";
+    tmp = inputTwoDouble();
+    newPolygon.d.x = tmp.first;
+    newPolygon.d.y = tmp.second;
+
+    app->getFractal()->setInitPolygon(newPolygon);
+    app->render();
+}
+
 void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mode) {
-    if (key == GLFW_KEY_M and action == GLFW_PRESS) {
+    if (       key == GLFW_KEY_M and action == GLFW_PRESS) {
         change_location();
     } else if (key == GLFW_KEY_S and action == GLFW_PRESS) {
         change_step();
-    } else if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-            glfwSetWindowShouldClose(pWindow, GL_TRUE);
+    } else if (key == GLFW_KEY_P and action == GLFW_PRESS) {
+        changeInitPolygon();
     } else if (key == GLFW_KEY_R and action == GLFW_PRESS) {
         changeRatio();
+    } else if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+            glfwSetWindowShouldClose(pWindow, GL_TRUE);
     }
 }
