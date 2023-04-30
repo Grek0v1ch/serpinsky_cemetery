@@ -11,6 +11,11 @@ namespace Renderer {
     class Image;
     class Sprite;
     enum class Color;
+
+    struct ViewPort {
+        Math::Vector leftBottom;
+        Math::Vector rightTop;
+    };
 }
 
 namespace Math {
@@ -44,17 +49,19 @@ namespace Math {
 
         void fillPolygon(const Polygon& o, Renderer::Color color);
 
-        void fillTriangle(Point v0, Point v1, Point v2, Renderer::Color color);
+        void fillTriangle(Vector v0, Vector v1, Vector v2, Renderer::Color color);
 
-        double edge(Point v0, Point v1, Point p) const noexcept;
+        void scaleTriangle(Vector& v0, Vector& v1, Vector& v2) const noexcept;
 
-        Point divSegmentInRatio(const Point& v0, const Point& v1, double ratio) const noexcept;
+        double edge(Vector v0, Vector v1, Vector p) const noexcept;
 
-        std::pair<Point, Point> getTwoPointsinRatio(const Point& v0, const Point& v1,
+        Vector divSegmentInRatio(const Vector& v0, const Vector& v1, double ratio) const noexcept;
+
+        std::pair<Vector, Vector> getTwoPointsinRatio(const Vector& v0, const Vector& v1,
                                                     double ratio) const noexcept;
 
-        Point getIntersectionTwoSegment(const Point& v0, const Point& v1, const Point& v2,
-                                        const Point& v3) const noexcept;
+        Vector getIntersectionTwoSegment(const Vector& v0, const Vector& v1, const Vector& v2,
+                                        const Vector& v3) const noexcept;
         [[nodiscard]]
         static unsigned int fixAmountStep(unsigned int amountStep) noexcept;
 
@@ -67,5 +74,6 @@ namespace Math {
         double _ratio;
         std::shared_ptr<Renderer::Image> _img;
         std::shared_ptr<Renderer::Sprite> _sprite;
+        Renderer::ViewPort _viewPort;
     };
 }

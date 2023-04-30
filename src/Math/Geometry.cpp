@@ -1,24 +1,28 @@
 #include "Geometry.hpp"
 
 namespace Math {
-	Vector Point::operator-(const Point& rhs) const noexcept {
+	Vector Vector::operator-(const Vector& rhs) const noexcept {
         return {x - rhs.x, y - rhs.y};
     }
 
-    void Point::scaleX(double scaleCoef) noexcept {
+    Vector Vector::operator+(const Vector& rhs) const noexcept {
+    	return {x + rhs.x, y + rhs.y};
+    }
+
+    void Vector::scaleX(double scaleCoef) noexcept {
     	x *= scaleCoef;
     }
 
-    void Point::scaleY(double scaleCoef) noexcept {
+    void Vector::scaleY(double scaleCoef) noexcept {
     	y *= scaleCoef;
     }
 
-    void Point::scale(double scaleCoefX, double scaleCoefY) noexcept {
+    void Vector::scale(double scaleCoefX, double scaleCoefY) noexcept {
     	scaleX(scaleCoefX);
     	scaleY(scaleCoefY);
     }
 
-    void Point::scale(double scaleCoef) noexcept {
+    void Vector::scale(double scaleCoef) noexcept {
     	scaleX(scaleCoef);
     	scaleY(scaleCoef);
     }

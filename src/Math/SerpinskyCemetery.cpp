@@ -18,7 +18,8 @@ namespace Math {
     , _amountSteps(fixAmountStep(amountSteps))
     , _ratio(std::abs(ratio))
     , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
-    , _sprite(nullptr) {
+    , _sprite(nullptr)
+    , _viewPort{{0, 0}, {1, 1}} {
         makeFractal();
     }
 
@@ -103,14 +104,34 @@ namespace Math {
         fillTriangle(o.c, o.d, o.a, color);
     }
 
-    void SerpinskyCemetery::fillTriangle(Point v0, Point v1, Point v2, Color color) {
+    void SerpinskyCemetery::scaleTriangle(Vector& v0, Vector& v1, Vector& v2) const noexcept {
+        auto crop = [](Vector&& o) -> Vector {
+            o.x = o.x < 0 ? 0 : o.x;
+            o.y = o.y < 0 ? 0 : o.y;
+            return o;
+        };
+        auto temp = _viewPort.leftBottom;
+        temp.scale(_img->width(), _img->height());
+        v0 = crop(v0 - temp);
+        v1 = crop(v1 - temp);
+        v2 = crop(v2 - temp);
+        auto diff = _viewPort.rightTop - _viewPort.leftBottom;
+        double scaleCoefX = diff.x > 0 ? 1. / diff.x : 0.;
+        double scaleCoefY = diff.y ? 1. / diff.y : 0.;
+        v0.scale(scaleCoefX, scaleCoefY);
+        v1.scale(scaleCoefX, scaleCoefY);
+        v2.scale(scaleCoefX, scaleCoefY);
+    }
+
+    void SerpinskyCemetery::fillTriangle(Vector v0, Vector v1, Vector v2, Color color) {
+        scaleTriangle(v0, v1, v2);
         int minX = ceil(std::min(std::min(v0.x, v1.x), v2.x));
         int maxX = ceil(std::max(std::max(v0.x, v1.x), v2.x));
         int minY = ceil(std::min(std::min(v0.y, v1.y), v2.y));
         int maxY = ceil(std::max(std::max(v0.y, v1.y), v2.y));
         for (unsigned int x = minX; x <= maxX and x < _img->width(); ++x) {
             for (unsigned int y = minY; y <= maxY and y < _img->height(); ++y) {
-                Point p = {static_cast<double>(x), static_cast<double>(y)};
+                Vector p = {static_cast<double>(x), static_cast<double>(y)};
                 double e10 = edge(v1, v0, p);
                 double e21 = edge(v2, v1, p);
                 double e02 = edge(v0, v2, p);
@@ -121,31 +142,31 @@ namespace Math {
         }
     }
 
-    double SerpinskyCemetery::edge(Point v0, Point v1, Point p) const noexcept {
+    double SerpinskyCemetery::edge(Vector v0, Vector v1, Vector p) const noexcept {
             Vector a = p - v0;
             Vector b = v1 - v0;
             return a.y * b.x - a.x * b.y;
     }
 
-    Point SerpinskyCemetery::divSegmentInRatio(const Point& v0, const Point& v1,
+    Vector SerpinskyCemetery::divSegmentInRatio(const Vector& v0, const Vector& v1,
                                                const double ratio) const noexcept {
         double x = (v0.x + ratio * v1.x) / (1 + ratio);
         double y = (v0.y + ratio * v1.y) / (1 + ratio);
         return {x, y};
     }
 
-    std::pair<Point, Point> SerpinskyCemetery::getTwoPointsinRatio(
-            const Point& v0,
-            const Point& v1,
+    std::pair<Vector, Vector> SerpinskyCemetery::getTwoPointsinRatio(
+            const Vector& v0,
+            const Vector& v1,
             const double ratio) const noexcept {
-        Point p0 = divSegmentInRatio(v0, v1, ratio / (1 + ratio));
-        Point p1 = divSegmentInRatio(v0, v1, (ratio + 1) / ratio);
+        Vector p0 = divSegmentInRatio(v0, v1, ratio / (1 + ratio));
+        Vector p1 = divSegmentInRatio(v0, v1, (ratio + 1) / ratio);
         return {p0, p1};
     }
 
-    Point SerpinskyCemetery::getIntersectionTwoSegment(const Point& v0, const Point& v1,
-                                                       const Point& v2,
-                                                       const Point& v3) const noexcept {
+    Vector SerpinskyCemetery::getIntersectionTwoSegment(const Vector& v0, const Vector& v1,
+                                                       const Vector& v2,
+                                                       const Vector& v3) const noexcept {
         double denom = (v0.x - v1.x) * (v2.y - v3.y) - (v0.y - v1.y) * (v2.x - v3.x);
         double x = (v0.x * v1.y - v0.y * v1.x) * (v2.x - v3.x)
                  - (v0.x - v1.x) * (v2.x * v3.y - v2.y * v3.x);
