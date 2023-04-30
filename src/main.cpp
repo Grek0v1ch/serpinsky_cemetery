@@ -25,7 +25,6 @@ int main(int argc, char** argv) {
         app->setFractal(fractal);
         app->setKeyCallback(keyCallback);
         app->start();
-        app->saveImage("img1.jpg");
     } catch (Exception::Exception& ex) {
         std::cout << ex.what() << std::endl;
     } catch (std::runtime_error& ex) {
@@ -69,6 +68,18 @@ std::pair<double, double> inputTwoDouble() {
             std::cout << "Try again: ";
         }
     }
+}
+
+std::string inputImageName() {
+    std::string name;
+    std::cout << "Save image\n";
+    std::cout << "Input file name: ";
+    std::cin >> name;
+    size_t found = name.find_last_of('.');
+    if (found == std::string::npos or name.substr(found) != ".jpg") {
+        name += ".jpg";
+    }
+    return name;
 }
 
 void changeLocation() {
@@ -134,15 +145,22 @@ void changeInitPolygon() {
     app->render();
 }
 
+void save() {
+    std::string name = inputImageName();
+    app->saveImage(name);
+}
+
 void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mode) {
     if (       key == GLFW_KEY_M and action == GLFW_PRESS) {
         changeLocation();
-    } else if (key == GLFW_KEY_S and action == GLFW_PRESS) {
+    } else if (key == GLFW_KEY_I and action == GLFW_PRESS) {
         changeStep();
     } else if (key == GLFW_KEY_P and action == GLFW_PRESS) {
         changeInitPolygon();
     } else if (key == GLFW_KEY_R and action == GLFW_PRESS) {
         changeRatio();
+    } else if (key == GLFW_KEY_S and action == GLFW_PRESS) {
+        save();
     } else if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
             glfwSetWindowShouldClose(pWindow, GL_TRUE);
     }
