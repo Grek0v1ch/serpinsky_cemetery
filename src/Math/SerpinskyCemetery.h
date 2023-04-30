@@ -40,6 +40,8 @@ namespace Math {
 
         void setInitPolygon(const Polygon& initPolygon);
 
+        void setViewPort(const Renderer::ViewPort& viewPort);
+
     private:
         void initSprite() noexcept;
 

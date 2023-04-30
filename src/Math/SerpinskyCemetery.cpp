@@ -51,6 +51,12 @@ namespace Math {
         makeFractal();
     }
 
+    void SerpinskyCemetery::setViewPort(const Renderer::ViewPort& viewPort) {
+        _viewPort = viewPort;
+        _img->clear();
+        makeFractal();
+    }
+
     void SerpinskyCemetery::initSprite() noexcept {
         unsigned int size = genSize(_amountSteps);
         std::shared_ptr<Texture2D> texture = std::make_shared<Texture2D>(_img->width(),
