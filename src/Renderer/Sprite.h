@@ -25,14 +25,7 @@ namespace Renderer {
     public:
        void render() const;
 
-       [[maybe_unused]]
-       void setPosition(const glm::vec2& position);
-
-       [[maybe_unused]]
        void setSize(const glm::vec2& size);
-       
-       [[maybe_unused]]
-       void setRotation(float rotation);
 
         glm::vec2 size() const noexcept { return  _size; }
 

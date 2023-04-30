@@ -26,7 +26,8 @@ namespace Math {
         SerpinskyCemetery& operator=(SerpinskyCemetery&&) = delete;
 
     public:
-        SerpinskyCemetery(const Polygon& userPolygon, int amountSteps = 1, double ratio = 1.);
+        explicit SerpinskyCemetery(const Polygon& userPolygon, int amountSteps = 1,
+                                   double ratio = 1.);
         SerpinskyCemetery(SerpinskyCemetery&&) = default;
 
     public:

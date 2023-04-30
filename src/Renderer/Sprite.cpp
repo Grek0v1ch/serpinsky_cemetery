@@ -80,7 +80,7 @@ namespace Renderer {
         // перемещаем ориджин в левый нижний угол
         model = glm::translate(model, glm::vec3(0.5f * _size.x, 0.5f * _size.y, 0.0f));
         // поворачиваем
-        // model = glm::rotate(model, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
         // перемещаем ориджин в центр
         model = glm::translate(model, glm::vec3(-0.5f * _size.x, -0.5f * _size.y, 0.0f));
         // скалирование (увеличение размера)
@@ -95,15 +95,7 @@ namespace Renderer {
         glBindVertexArray(0);
     }
 
-    void Sprite::setPosition(const glm::vec2& position) {
-        _position = position;
-    }
-
     void Sprite::setSize(const glm::vec2& size) {
         _size = size;
-    }
-
-    void Sprite::setRotation(const float rotation) {
-        _rotation = rotation;
     }
 }

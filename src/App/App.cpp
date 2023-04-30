@@ -27,17 +27,6 @@ void App::setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) no
     _fractal = fractal;
 }
 
-void App::setLocation(const float left, const float right,
-                      const float bottom, const float top) noexcept {
-    glm::mat4 projectionMatrix =
-            glm::ortho(static_cast<float>(WIDTH) * left, static_cast<float>(WIDTH) * right,
-                       static_cast<float>(HEIGHT) * bottom, static_cast<float>(HEIGHT) * top,
-                       -100.0f, 100.0f);
-    const ResourceManager& resourceManager = ResourceManager::instance();
-    auto shaderProgram = resourceManager.getShaderProgram("SpriteShader");
-    shaderProgram->setUniform("projectionMatrix", projectionMatrix);
-}
-
 void App::setKeyCallback(void (*func)(GLFWwindow *, int, int, int, int)) {
     glfwSetKeyCallback(_window, func);
 }
@@ -96,11 +85,9 @@ void App::init(const std::string& windowName) {
     glm::mat4 projectionMatrix = glm::ortho(0.0f, static_cast<float>(WIDTH),
                                             0.0f, static_cast<float>(HEIGHT),
                                             -100.0f, 100.0f);
-    glm::mat4 modelMatrix(1.0f);
     ResourceManager& resourceManager = ResourceManager::instance();
     auto shaderProgram = resourceManager.loadShaderProgram("SpriteShader",
                                                             "res/vertex_shader.txt",
                                                             "res/fragment_shader.txt");
     shaderProgram->setUniform("projectionMatrix", projectionMatrix);
-    shaderProgram->setUniform("modelMatrix", modelMatrix);
 }

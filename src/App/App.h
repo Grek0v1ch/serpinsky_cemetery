@@ -23,8 +23,6 @@ public:
 
     void setFractal(const std::shared_ptr<Math::SerpinskyCemetery>& fractal) noexcept;
 
-    void setLocation(float left, float right, float bottom, float top) noexcept;
-
     void start() noexcept;
 
     void render() const noexcept;
