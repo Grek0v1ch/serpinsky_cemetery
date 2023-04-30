@@ -189,17 +189,12 @@ namespace Math {
         double scaleCoefX = diff.x > 0 ? 1. / diff.x : 0.;
         double scaleCoefY = diff.y > 0 ? 1. / diff.y : 0.;
         double scaleCoef = std::max(scaleCoefX, scaleCoefY);
-        int optimalAmountStep = static_cast<int>(std::log(IMAGE_SIZE * scaleCoef) / std::log(3));
+        unsigned int optimalAmountStep = static_cast<unsigned int>(std::log(IMAGE_SIZE * scaleCoef)
+                                                                   / std::log(3));
         if (optimalAmountStep >= amountStep) {
             return amountStep;
-            std::cout << amountStep << std::endl;
         } else {
             return optimalAmountStep;
-            std::cout << optimalAmountStep << std::endl;
         }
-    }
-
-    unsigned int SerpinskyCemetery::genSize(const unsigned int amountStep) noexcept {
-        return 729;
     }
 }

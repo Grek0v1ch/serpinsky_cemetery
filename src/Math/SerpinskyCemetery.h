@@ -68,9 +68,6 @@ namespace Math {
         [[nodiscard]]
         unsigned int fixAmountStep(unsigned int amountStep) noexcept;
 
-        [[nodiscard]]
-        static unsigned int genSize(unsigned int amountStep) noexcept;
-
     private:
         Renderer::ViewPort _viewPort;
         Polygon _initPolygon;
