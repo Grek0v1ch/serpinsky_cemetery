@@ -8,10 +8,6 @@
 
 std::shared_ptr<App> app;
 
-std::pair<float, float> input_2float();
-unsigned int input_uint();
-void change_location();
-void change_step();
 void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mode);
 
 // 243 - 5
@@ -39,20 +35,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-std::pair<float, float> input_2float() {
-    while (true) {
-        try {
-            std::string str1, str2;
-            std::cin >> str1 >> str2;
-            return {static_cast<float>(std::stod(str1)),
-                    static_cast<float>(std::stod(str2))};
-        } catch (const std::invalid_argument& ex) {
-            std::cout << "Try again: ";
-        }
-    }
-}
-
-unsigned int input_uint() {
+unsigned int inputUInt() {
     std::string str;
     std::cin >> str;
     while (true) {
@@ -88,29 +71,29 @@ std::pair<double, double> inputTwoDouble() {
     }
 }
 
-void change_location() {
-    float left;
-    float right;
-    float bottom;
-    float top;
+void changeLocation() {
+    double left;
+    double right;
+    double bottom;
+    double top;
     std::cout << "Change location\n";
     std::cout << "Input left and right: ";
-    auto tmp = input_2float();
+    auto tmp = inputTwoDouble();
     left = tmp.first;
     right = tmp.second;
     std::cout << "Input bottom and top: ";
-    tmp = input_2float();
+    tmp = inputTwoDouble();
     bottom = tmp.first;
     top = tmp.second;
-    app->setLocation(left, right, bottom, top);
+    app->getFractal()->setViewPort({{bottom, left}, {top, right}});
     app->render();
 }
 
-void change_step() {
+void changeStep() {
     unsigned int new_step;
     std::cout << "Change amount step\n";
     std::cout << "Input amount step: ";
-    new_step = input_uint();
+    new_step = inputUInt();
     app->getFractal()->setStep(new_step);
     app->render();
 }
@@ -153,9 +136,9 @@ void changeInitPolygon() {
 
 void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mode) {
     if (       key == GLFW_KEY_M and action == GLFW_PRESS) {
-        change_location();
+        changeLocation();
     } else if (key == GLFW_KEY_S and action == GLFW_PRESS) {
-        change_step();
+        changeStep();
     } else if (key == GLFW_KEY_P and action == GLFW_PRESS) {
         changeInitPolygon();
     } else if (key == GLFW_KEY_R and action == GLFW_PRESS) {
