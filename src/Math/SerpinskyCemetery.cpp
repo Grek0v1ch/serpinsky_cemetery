@@ -12,11 +12,13 @@
 namespace Math {
     using namespace Renderer;
 
-    SerpinskyCemetery::SerpinskyCemetery(const Polygon& userPolygon, int amountSteps = 1)
-    noexcept : _initPolygon(userPolygon)
-             , _amountSteps(fixAmountStep(amountSteps))
-             , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
-             , _sprite(nullptr) {
+    SerpinskyCemetery::SerpinskyCemetery(const Polygon& userPolygon, const int amountSteps,
+                                         const double ratio)
+    : _initPolygon(userPolygon)
+    , _amountSteps(fixAmountStep(amountSteps))
+    , _ratio(std::abs(ratio))
+    , _img(std::make_shared<Image>(genSize(_amountSteps), genSize(_amountSteps)))
+    , _sprite(nullptr) {
         _initPolygon.scale(static_cast<double>(genSize(_amountSteps)));
         fillPolygon(_initPolygon, Color::BLACK);
         genFractal(_initPolygon, _amountSteps);
@@ -34,8 +36,15 @@ namespace Math {
         _sprite->setSize(glm::vec2(newWidth, newHeight));
     }
 
-    void SerpinskyCemetery::setStep(unsigned int amountSteps) noexcept {
+    void SerpinskyCemetery::setStep(unsigned int amountSteps) {
         _amountSteps = fixAmountStep(amountSteps);
+        fillPolygon(_initPolygon, Color::BLACK);
+        genFractal(_initPolygon, _amountSteps);
+        initSprite();
+    }
+
+    void SerpinskyCemetery::setRatio(double ratio) {
+        _ratio = std::abs(ratio);
         fillPolygon(_initPolygon, Color::BLACK);
         genFractal(_initPolygon, _amountSteps);
         initSprite();
@@ -48,19 +57,18 @@ namespace Math {
                                                                          _img->data());
         const ResourceManager& res = ResourceManager::instance();
         _sprite = std::make_shared<Sprite>(texture, res.getShaderProgram("SpriteShader"),
-                                           glm::vec2{0.0f},
+                                           glm::vec2{0.f},
                                            (_sprite ? _sprite->size() : glm::vec2(size)));
     }
 
-    void SerpinskyCemetery::genFractal(const Polygon& polygon, int currSteps) noexcept {
-        double ratio = 1.;
+    void SerpinskyCemetery::genFractal(const Polygon& polygon, int currSteps) {
         if (currSteps <= 0) {
             return;
         }
-        auto ABPoints = getTwoPointsinRatio(polygon.a, polygon.b, ratio);
-        auto BCPoints = getTwoPointsinRatio(polygon.b, polygon.c, ratio);
-        auto CDPoints = getTwoPointsinRatio(polygon.c, polygon.d, ratio);
-        auto DAPoints = getTwoPointsinRatio(polygon.d, polygon.a, ratio);
+        auto ABPoints = getTwoPointsinRatio(polygon.a, polygon.b, _ratio);
+        auto BCPoints = getTwoPointsinRatio(polygon.b, polygon.c, _ratio);
+        auto CDPoints = getTwoPointsinRatio(polygon.c, polygon.d, _ratio);
+        auto DAPoints = getTwoPointsinRatio(polygon.d, polygon.a, _ratio);
 
         auto v0 = getIntersectionTwoSegment(BCPoints.first, DAPoints.second,
                                             ABPoints.second, CDPoints.first);
@@ -82,12 +90,12 @@ namespace Math {
         genFractal({polygon.a, ABPoints.first, v3, DAPoints.second}, currSteps - 1);
     }
 
-    void SerpinskyCemetery::fillPolygon(const Polygon& o, Color color) noexcept {
+    void SerpinskyCemetery::fillPolygon(const Polygon& o, Color color) {
         fillTriangle(o.a, o.b, o.c, color);
         fillTriangle(o.c, o.d, o.a, color);
     }
 
-    void SerpinskyCemetery::fillTriangle(Point v0, Point v1, Point v2, Color color) noexcept {
+    void SerpinskyCemetery::fillTriangle(Point v0, Point v1, Point v2, Color color) {
         int minX = ceil(std::min(std::min(v0.x, v1.x), v2.x));
         int maxX = ceil(std::max(std::max(v0.x, v1.x), v2.x));
         int minY = ceil(std::min(std::min(v0.y, v1.y), v2.y));

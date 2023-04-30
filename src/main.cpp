@@ -21,10 +21,9 @@ int main(int argc, char** argv) {
     try {
         app = std::make_shared<App>("MainWindow", 729, 729, argv[0]);
         auto fractal = std::make_shared<Math::SerpinskyCemetery>(Math::Polygon{{0., 0.},
-                                                                               {0., 0.5},
+                                                                               {0., 1.},
                                                                                {1., 1.},
-                                                                               {1., 0.}},
-                                                                 2);
+                                                                               {1., 0.}});
         fractal->setWH(app->getWidth(), app->getHeight());
         app->setFractal(fractal);
         app->setKeyCallback(keyCallback);
@@ -64,6 +63,18 @@ unsigned int input_uint() {
     }
 }
 
+double inputDouble() {
+    std::string str;
+    std::cin >> str;
+    while (true) {
+        try {
+            return std::stod(str);
+        } catch (const std::invalid_argument& ex) {
+            std::cout << "Try again: ";
+        }
+    }
+}
+
 void change_location() {
     float left;
     float right;
@@ -87,8 +98,16 @@ void change_step() {
     std::cout << "Change amount step\n";
     std::cout << "Input amount step: ";
     new_step = input_uint();
-    auto fractal = app->getFractal();
-    fractal->setStep(new_step);
+    app->getFractal()->setStep(new_step);
+    app->render();
+}
+
+void changeRatio() {
+    double newRatio;
+    std::cout << "Change ratio\n";
+    std::cout << "Input ratio: ";
+    newRatio = inputDouble();
+    app->getFractal()->setRatio(newRatio);
     app->render();
 }
 
@@ -99,5 +118,7 @@ void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mod
         change_step();
     } else if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
             glfwSetWindowShouldClose(pWindow, GL_TRUE);
+    } else if (key == GLFW_KEY_R and action == GLFW_PRESS) {
+        changeRatio();
     }
 }
