@@ -41,6 +41,7 @@ unsigned int inputUInt() {
             return std::stoi(str);
         } catch (const std::invalid_argument& ex) {
             std::cout << "Try again: ";
+            std::cin >> str;
         }
     }
 }
@@ -53,18 +54,20 @@ double inputDouble() {
             return std::stod(str);
         } catch (const std::invalid_argument& ex) {
             std::cout << "Try again: ";
+            std::cin >> str;
         }
     }
 }
 
 std::pair<double, double> inputTwoDouble() {
+    std::string str1, str2;
+    std::cin >> str1 >> str2;
     while (true) {
         try {
-            std::string str1, str2;
-            std::cin >> str1 >> str2;
             return {std::stod(str1), std::stod(str2)};
         } catch (const std::invalid_argument& ex) {
             std::cout << "Try again: ";
+            std::cin >> str1 >> str2;
         }
     }
 }
