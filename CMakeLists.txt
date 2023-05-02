@@ -18,7 +18,7 @@ add_executable(serpinsky_cemetry
         src/Math/SerpinskyCemetery.cpp
         src/Math/SerpinskyCemetery.h
         src/Math/Geometry.cpp
-        src/Math/Geometry.hpp
+        src/Math/Geometry.h
         src/ResourceManager/ResourceManager.cpp
         src/ResourceManager/ResourceManager.h
         src/App/App.cpp

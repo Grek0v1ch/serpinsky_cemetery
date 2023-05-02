@@ -5,7 +5,7 @@
 
 #include <glad/glad.h>
 
-#include "Geometry.hpp"
+#include "Geometry.h"
 
 namespace Renderer {
     class Image;

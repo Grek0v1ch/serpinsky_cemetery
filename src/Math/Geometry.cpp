@@ -1,4 +1,4 @@
-#include "Geometry.hpp"
+#include "Geometry.h"
 
 namespace Math {
 	Vector Vector::operator-(const Vector& rhs) const noexcept {

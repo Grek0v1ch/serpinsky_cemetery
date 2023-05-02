@@ -3,7 +3,7 @@
 
 #include "Exception/Exception.h"
 #include "Math/SerpinskyCemetery.h"
-#include "Math/Geometry.hpp"
+#include "Math/Geometry.h"
 #include "App/App.h"
 
 std::shared_ptr<App> app;
